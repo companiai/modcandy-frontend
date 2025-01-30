@@ -11,7 +11,6 @@ A modern content moderation dashboard built with React and TypeScript.
 - 📊 **Incident Management**
   - Real-time incident tracking
   - Severity levels (High/Medium/Low)
-  - Confidence scoring
   - Session tracking
   - Player monitoring
 
@@ -24,8 +23,6 @@ A modern content moderation dashboard built with React and TypeScript.
   - Dark theme
   - Responsive design
   - Interactive tables
-  - Status indicators
-  - Date filtering
 
 ## Tech Stack
 
@@ -33,9 +30,8 @@ A modern content moderation dashboard built with React and TypeScript.
 - TypeScript
 - Tailwind CSS
 - Vite
-- Lucide Icons
 
-## Development
+## Quick Start
 
 ```bash
 npm install
