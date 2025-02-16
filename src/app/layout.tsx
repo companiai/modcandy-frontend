@@ -4,6 +4,14 @@ import { AuthProvider } from '@/context/AuthContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const metadata = {
+  title: 'Modcandy',
+  description: 'Modcandy - Game Moderation Platform',
+  icons: {
+    icon: '/favicon.svg',
+  },
+};
+
 export default function RootLayout({
   children,
 }: {
