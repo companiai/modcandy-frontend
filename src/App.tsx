@@ -39,7 +39,13 @@ function App() {
       case 'log':
         return <Log />;
       case 'settings':
-        return <Settings token={token} />;
+        return token ? (
+          <Settings token={token} />
+        ) : (
+          <div className="p-6">
+            <p className="text-gray-400">Please log in to access settings.</p>
+          </div>
+        );
     }
   };
 

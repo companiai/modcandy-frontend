@@ -5,5 +5,5 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function SettingsPage() {
   const { token } = useAuth();
-  return <Settings token={token} />;
+  return token ? <Settings token={token} /> : null;
 } 

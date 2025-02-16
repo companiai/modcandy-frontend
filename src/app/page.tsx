@@ -51,7 +51,7 @@ export default function Page() {
       case '/log':
         return <Log />;
       case '/settings':
-        return <Settings token={token} />;
+        return token ? <Settings token={token} /> : null;
       case '/players':
         return <PlayerStats />;
       default:
