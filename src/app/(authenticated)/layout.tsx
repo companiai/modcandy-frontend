@@ -50,11 +50,12 @@ export default function AuthenticatedLayout({
   }
 
   const navItems = [
-    { href: '/', icon: Home, label: 'Home' },
+    { href: '/dashboard', icon: Home, label: 'Dashboard' },
+    { href: '/players', icon: Users, label: 'Player Stats' },
     { href: '/incidents', icon: AlertCircle, label: 'Incidents' },
     { href: '/log', icon: MessageSquare, label: 'Log' },
     { href: '/settings', icon: Settings, label: 'Settings' },
-    { href: '/players', icon: Users, label: 'Player Stats' },
+    
   ];
 
   return (

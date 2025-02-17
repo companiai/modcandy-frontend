@@ -44,6 +44,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
     if (!isAuthenticated && pathname !== '/') {
       router.push('/');
+    } else if (isAuthenticated && pathname === '/') {
+      router.push('/dashboard');
     }
   }, [isAuthenticated, isInitialized, pathname, router]);
 
