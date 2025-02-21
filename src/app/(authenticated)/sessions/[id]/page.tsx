@@ -147,7 +147,7 @@ export default function SessionDetailsPage({ params }: { params: { id: string } 
             </div>
 
             <div className="bg-[#0a0b14] p-4 rounded-lg">
-              <h3 className="text-gray-400 mb-1">Messages</h3>
+              <h3 className="text-gray-400 mb-1">Flagged Messages</h3>
               <div className="flex items-center gap-2">
                 <MessageSquare className="w-5 h-5 text-blue-400" />
                 <span className="text-3xl font-medium">{sessionData.total_messages}</span>
