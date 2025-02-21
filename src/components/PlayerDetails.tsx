@@ -4,17 +4,17 @@ import { API_ENDPOINTS } from '@/config/api';
 import { ArrowLeft, MessageSquare, X } from 'lucide-react';
 import Link from 'next/link';
 
-interface IncidentsByType {
+interface FlaggedMessagesByType {
   tox_type: string;
   count: number;
 }
 
-interface IncidentsBySeverity {
+interface FlaggedMessagesBySeverity {
   severity: string;
   count: number;
 }
 
-interface Incident {
+interface FlaggedMessage {
   incident_id: number;
   playerName: string;
   sessionId: string;
@@ -35,10 +35,10 @@ interface PlayerDetailsData {
   player_id: string;
   player_name: string;
   tox_score: number;
-  total_incidents: number;
-  incidents_by_type: IncidentsByType[];
-  incidents_by_severity: IncidentsBySeverity[];
-  recent_incidents: Incident[];
+  total_flagged_messages: number;
+  flagged_messages_by_type: FlaggedMessagesByType[];
+  flagged_messages_by_severity: FlaggedMessagesBySeverity[];
+  recent_flagged_messages: FlaggedMessage[];
   total_messages: number;
   toxic_messages: number;
   total_sessions: number;
@@ -149,8 +149,8 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
               <p className="text-3xl font-medium text-red-400">{playerData.tox_score}</p>
             </div>
             <div className="bg-[#0a0b14] p-4 rounded-lg">
-              <h3 className="text-gray-400 mb-1">Total Incidents</h3>
-              <p className="text-3xl font-medium text-red-400">{playerData.total_incidents}</p>
+              <h3 className="text-gray-400 mb-1">Total Flagged Messages</h3>
+              <p className="text-3xl font-medium text-red-400">{playerData.total_flagged_messages}</p>
             </div>
           </div>
 
@@ -171,9 +171,9 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h2 className="text-lg font-medium mb-4">Incidents by Type</h2>
+              <h2 className="text-lg font-medium mb-4">Flagged Messages by Type</h2>
               <div className="space-y-2">
-                {playerData.incidents_by_type.map((type, index) => (
+                  {playerData.flagged_messages_by_type.map((type, index) => (
                   <div
                     key={index}
                     className="flex justify-between items-center bg-[#0a0b14] p-3 rounded-lg"
@@ -186,9 +186,9 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
             </div>
 
             <div>
-              <h2 className="text-lg font-medium mb-4">Incidents by Severity</h2>
+              <h2 className="text-lg font-medium mb-4">Flagged Messages by Severity</h2>
               <div className="space-y-2">
-                {playerData.incidents_by_severity.map((severity, index) => (
+                {playerData.flagged_messages_by_severity.map((severity, index) => (
                   <div
                     key={index}
                     className="flex justify-between items-center bg-[#0a0b14] p-3 rounded-lg"
@@ -203,40 +203,40 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
         </div>
 
         <div className="bg-[#1a1b2e] rounded-lg p-6">
-          <h2 className="text-lg font-medium mb-4">Recent Incidents</h2>
+          <h2 className="text-lg font-medium mb-4">Recent Flagged Messages</h2>
           <div className="space-y-3">
-            {playerData.recent_incidents.map((incident) => (
+            {playerData.recent_flagged_messages.map((flaggedMessage) => (
               <div
-                key={incident.incident_id}
+                key={flaggedMessage.incident_id}
                 className="bg-[#0a0b14] p-4 rounded-lg space-y-2"
               >
                 <div className="flex items-center gap-2">
                   <span
                     className={`px-2 py-1 rounded text-sm ${
-                      incident.severity === 'HIGH'
+                      flaggedMessage.severity === 'HIGH'
                         ? 'bg-red-500/20 text-red-400'
                         : 'bg-yellow-500/20 text-yellow-400'
                     }`}
                   >
-                    {incident.severity}
+                    {flaggedMessage.severity}
                   </span>
                   <span
                     className="px-2 py-1 rounded text-sm bg-blue-500/20 text-blue-400"
                   >
-                    {incident.tox_type}
+                    {flaggedMessage.tox_type}
                   </span>
                 </div>
-                <p className="text-gray-200">{incident.message}</p>
+                <p className="text-gray-200">{flaggedMessage.message}</p>
                 <div className="flex justify-between items-center mt-2">
                   <span className="text-sm text-gray-400">
-                    {formatDate(incident.created)}
+                    {formatDate(flaggedMessage.created)}
                   </span>
                   <div className="flex flex-col items-end gap-1">
                     <span className="text-xs text-gray-500">
-                      Session ID: {incident.sessionId}
+                        Session ID: {flaggedMessage.sessionId}
                     </span>
                     <button
-                      onClick={() => fetchSessionMessages(incident.sessionId)}
+                      onClick={() => fetchSessionMessages(flaggedMessage.sessionId)}
                       className="flex items-center gap-1.5 text-blue-400 hover:text-blue-300"
                     >
                       <MessageSquare size={14} />

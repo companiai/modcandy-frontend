@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/context/AuthContext';
-import { Home, AlertCircle, MessageSquare, Settings, Users, LogOut, Menu, X } from 'lucide-react';
+import { Home, AlertCircle, MessageSquare, Settings, Users, LogOut, Menu, X, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Suspense, useState, useEffect } from 'react';
@@ -52,10 +52,10 @@ export default function AuthenticatedLayout({
   const navItems = [
     { href: '/dashboard', icon: Home, label: 'Dashboard' },
     { href: '/players', icon: Users, label: 'Player Stats' },
-    { href: '/incidents', icon: AlertCircle, label: 'Incidents' },
-    { href: '/log', icon: MessageSquare, label: 'Log' },
+    { href: '/sessions', icon: Clock, label: 'Sessions' },
+    { href: '/flagged', icon: AlertCircle, label: 'Flagged' },
+    { href: '/activity', icon: MessageSquare, label: 'Activity' },
     { href: '/settings', icon: Settings, label: 'Settings' },
-    
   ];
 
   return (

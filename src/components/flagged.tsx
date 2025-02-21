@@ -11,7 +11,7 @@ import { useAuth } from '@/context/AuthContext';
 import { API_ENDPOINTS } from '@/config/api';
 
 interface Incident {
-  incident_id: number;
+  id: number;
   playerName: string;
   sessionId: string;
   tox_type: string;
@@ -52,7 +52,7 @@ const TYPE_OPTIONS = [
   'SEXUALLY_EXPLICIT',
 ];
 
-function Incidents() {
+function FlaggedLog() {
   const { token } = useAuth();
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -346,9 +346,9 @@ function Incidents() {
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-2xl font-bold mb-1">Incidents</h2>
+            <h2 className="text-2xl font-bold mb-1">Flagged Messages</h2>
             <p className="text-gray-400">
-              {totalIncidents} total incidents found
+              Total Flagged: {totalIncidents}
             </p>
           </div>
           <button className="bg-[#1a1b2e] px-4 py-2 rounded-lg flex items-center gap-2">
@@ -367,7 +367,7 @@ function Incidents() {
             <table className="w-full table-fixed">
               <thead>
                 <tr className="border-b border-gray-800">
-                  <th className="text-left p-4 w-28">Incident ID</th>
+                  <th className="text-left p-4 w-28">Message ID</th>
                   <th className="text-left p-4 w-28">Session ID</th>
                   <th className="text-left p-4 w-32">Type</th>
                   <th className="text-left p-4 w-28">Severity</th>
@@ -380,11 +380,11 @@ function Incidents() {
               <tbody>
                 {incidents?.map((incident) => (
                   <tr 
-                    key={incident.incident_id} 
+                    key={incident.id} 
                     className="border-b border-gray-800/50 hover:bg-gray-800/20"
                     data-session-row
                   >
-                    <td className="p-4 whitespace-nowrap">{incident.incident_id}</td>
+                    <td className="p-4 whitespace-nowrap">{incident.id}</td>
                     <td className="p-4 whitespace-nowrap">{incident.sessionId}</td>
                     <td className="p-4 truncate" title={incident.tox_type}>{incident.tox_type}</td>
                     <td className="p-4 whitespace-nowrap">
@@ -499,4 +499,4 @@ function Incidents() {
   );
 }
 
-export default Incidents;
+export default FlaggedLog;

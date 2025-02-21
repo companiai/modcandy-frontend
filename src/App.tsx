@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Home, AlertCircle, Settings as SettingsIcon, LogOut, MessageSquare } from 'lucide-react';
 import Login from './components/Login';
 import Register from './components/Register';
-import Incidents from './components/Incidents';
-import Log from './components/Log';
+import Incidents from './components/flagged';
+import Log from './components/Activity';
 import Settings from './components/Settings';
 import { useAuth } from './context/AuthContext';
 

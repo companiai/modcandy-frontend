@@ -11,7 +11,7 @@ interface Message {
   session_id: number;
 }
 
-function Log() {
+function Activity() {
   const { token } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -66,7 +66,7 @@ function Log() {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-semibold"> Recent Messages</h1>
+          <h1 className="text-2xl font-semibold">Recent Activity</h1>
           {/* <p className="text-gray-400">Total messages: {messages.length}</p> */}
         </div>
       </div>
@@ -109,4 +109,4 @@ function Log() {
   );
 }
 
-export default Log;
+export default Activity;
