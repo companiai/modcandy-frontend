@@ -2,9 +2,10 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { API_ENDPOINTS } from '@/config/api';
-import { ArrowLeft, MessageSquare, Users } from 'lucide-react';
+import { ArrowLeft, MessageSquare, Users, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { fetchData } from '@/lib/utils';
 
 interface ToxicMessage {
   message: string;
@@ -20,6 +21,13 @@ interface ToxicPlayer {
   toxic_messages_count: number;
 }
 
+interface SessionMessage {
+  message: string;
+  player_name: string;
+  created: string;
+  flagged: boolean;
+}
+
 interface SessionDetailsData {
   session_id: string;
   tox_score: number;
@@ -31,6 +39,7 @@ interface SessionDetailsData {
   updated: string;
   toxic_messages: ToxicMessage[];
   top_toxic_players: ToxicPlayer[];
+  messages: SessionMessage[];
 }
 
 export default function SessionDetailsPage({ params }: { params: { id: string } }) {
@@ -38,6 +47,9 @@ export default function SessionDetailsPage({ params }: { params: { id: string } 
   const [sessionData, setSessionData] = useState<SessionDetailsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showAllMessages, setShowAllMessages] = useState(false);
+  const [sessionMessages, setSessionMessages] = useState<SessionMessage[]>([]);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
 
   useEffect(() => {
     const fetchSessionDetails = async () => {
@@ -67,6 +79,24 @@ export default function SessionDetailsPage({ params }: { params: { id: string } 
       fetchSessionDetails();
     }
   }, [token, params.id]);
+
+  const fetchSessionMessages = async () => {
+    if (!token) return;
+    setIsLoadingMessages(true);
+    try {
+      const messages = await fetchData(`${API_ENDPOINTS.SESSION_MESSAGES(params.id)}`, token);
+      setSessionMessages(messages);
+    } catch (error) {
+      console.error('Error fetching session messages:', error);
+    } finally {
+      setIsLoadingMessages(false);
+    }
+  };
+
+  const handleViewAllMessages = () => {
+    setShowAllMessages(true);
+    fetchSessionMessages();
+  };
 
   if (isLoading) {
     return (
@@ -178,7 +208,15 @@ export default function SessionDetailsPage({ params }: { params: { id: string } 
 
         {/* Toxic Messages */}
         <div className="bg-[#1a1b2e] rounded-lg p-6">
-          <h2 className="text-lg font-medium mb-4">Toxic Messages</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-medium">Messages</h2>
+            <button
+              onClick={handleViewAllMessages}
+              className="text-blue-400 hover:text-blue-300 transition-colors text-sm"
+            >
+              View All Messages
+            </button>
+          </div>
           <div className="space-y-3">
             {sessionData.toxic_messages.map((message, index) => (
               <div
@@ -212,6 +250,63 @@ export default function SessionDetailsPage({ params }: { params: { id: string } 
           </div>
         </div>
       </div>
+
+      {/* Messages Popup */}
+      {showAllMessages && (
+        <div 
+          className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[1000]"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowAllMessages(false);
+            }
+          }}
+        >
+          <div className="bg-[#1a1b2e] rounded-lg w-full max-w-2xl max-h-[80vh] overflow-hidden">
+            <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+              <h3 className="text-lg font-medium">Session Messages</h3>
+              <button 
+                onClick={() => setShowAllMessages(false)}
+                className="text-gray-400 hover:text-gray-200"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-4 overflow-y-auto max-h-[60vh]">
+              {isLoadingMessages ? (
+                <div className="text-center py-4">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto"></div>
+                </div>
+              ) : sessionMessages.length ? (
+                <div className="space-y-4">
+                  {sessionMessages.map((msg, index) => (
+                    <div 
+                      key={index}
+                      className={`p-4 rounded-lg ${
+                        msg.flagged ? 'bg-red-500/10' : 'bg-[#0a0b14]'
+                      }`}
+                    >
+                      <div className="flex justify-between items-center mb-2">
+                        <Link
+                          href={`/players/${msg.player_name}`}
+                          className="text-blue-400 hover:text-blue-300 transition-colors"
+                        >
+                          {msg.player_name}
+                        </Link>
+                        <span className="text-sm text-gray-400">
+                          {new Date(msg.created).toLocaleTimeString()}
+                        </span>
+                      </div>
+                      <p className="text-gray-200">{msg.message}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center text-gray-400">No messages found</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

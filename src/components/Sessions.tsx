@@ -88,7 +88,7 @@ export default function Sessions() {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-semibold">Game Sessions</h2>
+          <h2 className="text-2xl font-semibold">Sessions</h2>
           <p className="text-gray-400">Total Sessions: {totalSessions}</p>
         </div>
       </div>
